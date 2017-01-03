@@ -24,6 +24,4 @@ public class Computer implements ApplicationContextAware,BeanNameAware {
         System.out.println(this.name);
         System.out.println(this.applicationContext);
     }
-
-
 }

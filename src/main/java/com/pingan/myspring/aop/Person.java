@@ -21,4 +21,8 @@ public class Person {
         System.err.println("说一句Hello。。。。。。" + name);
         return "";
     }
+
+    public void eat() {
+        System.out.println("人在吃饭");
+    }
 }
