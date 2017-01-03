@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+           http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+    <bean id="personPoxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <bean class="com.pingan.myspring.aop.Person"></bean>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>aroundAdvisor</value>
+                <value>beforeAdvisor</value>
+                <value>afterAdvisor</value>
+            </list>
+        </property>
+    </bean>
+    <!--切点-->
+    <bean id="pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut">
+        <property name="patterns">
+            <list>
+                <value>.*run.*</value>
+                <value>.*say.*</value>
+            </list>
+        </property>
+    </bean>
+    <!--定义通知类-->
+    <bean id="around" class="com.pingan.myspring.aop.AroundAdvice"/>
+    <bean id="before" class="com.pingan.myspring.aop.MyBeforeAdvice"/>
+    <bean id="after" class="com.pingan.myspring.aop.MyAfterAdvice"/>
+    <!-- 切面 -->
+    <bean id="aroundAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+        <property name="pointcut" ref="pointcut"></property>
+        <property name="advice" ref="around"></property>
+    </bean>
+    <bean id="beforeAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+        <property name="pointcut" ref="pointcut"></property>
+        <property name="advice" ref="before"></property>
+    </bean>
+    <bean id="afterAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+        <property name="pointcut" ref="pointcut"></property>
+        <property name="advice" ref="after"></property>
+    </bean>
+</beans>
